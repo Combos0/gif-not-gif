@@ -1,16 +1,7 @@
-function gifStart() {
-
-    fetch('https://api.giphy.com/v1/gifs/translate?api_key=t2ilWvAtz6EDx36HEayD5xPBM0uHMRoj&s=cats', {mode: 'cors'})
-    .then(function(response) {
-        return response.json();
-    })
-    .then(function(response) {
-        elements.img.src = response.data.images.original.url;
-    })
-    .catch(function(err) {
-        console.log(err);
-    });
-
+async function gifStart() {
+    const response = await fetch('https://api.giphy.com/v1/gifs/translate?api_key=t2ilWvAtz6EDx36HEayD5xPBM0uHMRoj&s=cats', {mode: 'cors'});
+    const gifData = await response.json();
+    elements.img.src = gifData.data.images.original.url;
 };
 
 const elements = {
@@ -25,16 +16,9 @@ const eventHandlers = (() => {
     elements.BTN.addEventListener('click', searchGif);
 })();
 
-function searchGif() {
+async function searchGif() {
     let keyWord = elements.search.value;
-    fetch(`https://api.giphy.com/v1/gifs/search?api_key=t2ilWvAtz6EDx36HEayD5xPBM0uHMRoj&q=${keyWord}&limit=1&offset=0&rating=g&lang=en`, {mode: 'cors'})
-    .then(function(response) {
-        return response.json();
-    })
-    .then(function(response) {
-        elements.img.src = response.data[0].images.original.url;
-    })
-    .catch(function(err) {
-        console.log(err);
-    });
+    const userSearch = await fetch(`https://api.giphy.com/v1/gifs/search?api_key=t2ilWvAtz6EDx36HEayD5xPBM0uHMRoj&q=${keyWord}&limit=1&offset=0&rating=g&lang=en`, {mode: 'cors'});
+    const gifData = await userSearch.json();
+    elements.img.src = gifData.data[0].images.original.url;
 };
